@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { Car } from './car';
-import { ListingComponent } from "./listing/listing.component";
+import {Component} from '@angular/core';
+import {Car} from './car';
+import {ListingComponent} from "./listing/listing.component";
 
 @Component({
   selector: 'app-root',
@@ -8,9 +8,16 @@ import { ListingComponent } from "./listing/listing.component";
   template: `
     <h1>Saved Cars {{ savedCarList.length }}</h1>
     <section class="container">
-      @for(car of carList; track car) {
-        <app-listing [car]="car"/>
-      }</section>
+      @for (car of carList; track car) {
+        <app-listing [car]="car" (carSaved)="addCarToSaved($event)"/>
+      }
+
+    </section>
+    <article>
+      @for (savedCar of savedCarList; track savedCar) {
+        <p>{{ savedCar.make }} {{ savedCar.model }}</p>
+      }
+    </article>
   `,
   styles: [],
   imports: [
@@ -53,4 +60,8 @@ export class AppComponent {
       transmission: 'Automatic',
     },
   ];
+
+  addCarToSaved(car: Car) {
+    this.savedCarList.push(car);
+  }
 }
