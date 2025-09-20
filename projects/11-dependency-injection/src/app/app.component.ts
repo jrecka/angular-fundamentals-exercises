@@ -17,11 +17,19 @@ import {UserInfoComponent} from "./user-info/user-info.component";
 export class AppComponent {
   userService = inject(UserService);
   userData: User[] = [];
+  /* Wersja z Promise */
+  // constructor() {
+  //   this.userService.getUserData();
+  // }
 
-  constructor() {
-    this.userService.getUserData().then(
-      data => this.userData = data
-    )
+
+  /* Wersja z async/await u i fetch  */
+  async ngOnInit(): Promise<void> {
+    try {
+      this.userData = await this.userService.getUserData();
+    } catch (error) {
+      console.log('Error: ', error);
+    }
   }
 
 }
