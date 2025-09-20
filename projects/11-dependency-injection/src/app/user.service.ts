@@ -7,6 +7,7 @@ import {Injectable} from "@angular/core";
 
 export class UserService {
   private userData: User[] = data;
+  private PATH: string = 'https://jsonplaceholder.typicode.com/users';
 
   constructor() {
   }
@@ -21,7 +22,7 @@ export class UserService {
   /*  Pobieranie userData z API za pomocą fetch i async/await */
   async getUserData() {
     try {
-      const response = await fetch('https://jsonplaceholder.typicode.com/users');
+      const response = await fetch(this.PATH);
 
       if (!response.ok) {
         throw new Error('Błąd sieci: ' + response.status)
@@ -33,6 +34,13 @@ export class UserService {
     } catch (error) {
       console.error('Wystąpił błąd: ', error);
     }
+  }
+
+  async getUserById(id: number) {
+    const response = await fetch(this.PATH + `/${id}`);
+    if (!response.ok) throw new Error('Błąd sieci: ' + response.status );
+    return response.json();
+
   }
 
 }

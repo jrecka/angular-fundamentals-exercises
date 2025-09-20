@@ -1,38 +1,41 @@
-import {Component, Input} from '@angular/core';
+import {Component, inject, Inject, Input, numberAttribute, OnInit} from '@angular/core';
 import { User } from '../data';
+import {UserService} from "../user.service";
 
 @Component({
   selector: 'app-user-info',
   standalone: true,
   template: `
-    <p>{{ user.id }} {{ user.email }}</p>
-    <!-- add more properties to customize -->
+    <section>
+      <p> {{ user?.name }}</p>
+      <p> {{ user?.username }}</p>
+      <p> {{ user?.email }}</p>
+      <p> {{ user?.address?.street }}</p>
+      <p> {{ user?.address?.suite }}</p>
+      <p> {{ user?.address?.city }}</p>
+      <p> {{ user?.address?.zipcode }}</p>
+      <p> {{ user?.address?.city }}</p>
+      <p> {{ user?.address?.geo?.lat }}</p>
+      <p> {{ user?.address?.geo?.lng }}</p>
+      <p> {{ user?.phone }}</p>
+      <p> {{ user?.website }}</p>
+      <p> {{ user?.company?.name }}</p>
+      <p> {{ user?.company?.catchPhrase }}</p>
+      <p> {{ user?.company?.bs }}</p>
+    </section>
   `,
   styles: ``,
 })
-export class UserInfoComponent {
-  // Test user data
-  @Input() user: User = {
-    id: -1,
-    name: 'Ervin Howell',
-    username: 'Antonette',
-    email: 'Shanna@melissa.tv',
-    address: {
-      street: 'Victor Plains',
-      suite: 'Suite 879',
-      city: 'Wisokyburgh',
-      zipcode: '90566-7771',
-      geo: {
-        lat: '-43.9509',
-        lng: '-34.4618',
-      },
-    },
-    phone: '010-692-6593 x09125',
-    website: 'anastasia.net',
-    company: {
-      name: 'Deckow-Crist',
-      catchPhrase: 'Proactive didactic contingency',
-      bs: 'synergize scalable supply-chains',
-    },
-  };
+export class UserInfoComponent{
+  protected user: User | null = null;
+  private userService = inject(UserService);
+
+  @Input({transform: numberAttribute})
+  set id(value: number) {
+    this.load(value);
+  }
+
+  private async load(id: number): Promise<void> {
+    this.user = await this.userService.getUserById(id);
+  }
 }

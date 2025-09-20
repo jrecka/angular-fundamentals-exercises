@@ -2,16 +2,24 @@ import {Component, inject} from '@angular/core';
 import {UserService} from "./user.service";
 import {User} from "./data";
 import {UserInfoComponent} from "./user-info/user-info.component";
+import {RouterLink, RouterOutlet} from "@angular/router";
 
 @Component({
   selector: 'app-root',
   standalone: true,
   template: ` <h1>User Listing</h1>
   @for (user of userData; track user.id) {
-    <app-user-info [user]="user"/>
-  }`,
+    <ul>
+      <li><a [routerLink]="['user-info', user.id]">{{ user.name }} {{user.id}}| {{ $index }}</a></li>
+    </ul>
+  }
+
+  <router-outlet/>
+  `,
   imports: [
-    UserInfoComponent
+    UserInfoComponent,
+    RouterLink,
+    RouterOutlet
   ]
 })
 export class AppComponent {
