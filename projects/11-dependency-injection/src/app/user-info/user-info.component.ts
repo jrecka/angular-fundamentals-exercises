@@ -6,7 +6,7 @@ import {UserService} from "../user.service";
   selector: 'app-user-info',
   standalone: true,
   template: `
-    <section>
+    <section class="user-details" aria-live="polite" aria-atomic="true">
       <p> {{ user?.name }}</p>
       <p> {{ user?.username }}</p>
       <p> {{ user?.email }}</p>
@@ -24,7 +24,51 @@ import {UserService} from "../user.service";
       <p> {{ user?.company?.bs }}</p>
     </section>
   `,
-  styles: ``,
+  styles: `
+    section.user-details {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+      background-color: white;
+    }
+    section.user-details p {
+      margin: 0.5rem 0;
+      padding-bottom: 0.3rem;
+      border-bottom: 1px solid #ddd;
+      word-break: break-word;
+    }
+    section.user-details p:last-child {
+      border-bottom: none;
+    }
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+      nav.user-list {
+        width: 100%;
+        height: 150px;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+      nav.user-list ul {
+        display: flex;
+        gap: 0.5rem;
+      }
+      nav.user-list li {
+        margin-bottom: 0;
+      }
+      nav.user-list a {
+        white-space: nowrap;
+        padding: 0.5rem 1rem;
+      }
+      section.user-details {
+        padding: 1rem;
+        height: calc(100vh - 150px - 56px);
+      }
+    }
+  `,
 })
 export class UserInfoComponent{
   protected user: User | null = null;
